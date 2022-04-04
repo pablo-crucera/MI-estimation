@@ -137,6 +137,7 @@ double gao2(NumericVector X, NumericVector Y, int k = 5, int max_neighbors = 30)
     double xi = 0;
     
     for(int i = 0; i < N; i++) {
+      std::cout << i + 1 << "/" << N << " completed" << std::endl;
       NumericMatrix sorted_dist_i(N, 3);
       NumericMatrix::Column col1 = sorted_dist_i(_, 0);
       NumericMatrix::Column col2 = sorted_dist_i(_, 1);
@@ -158,9 +159,9 @@ double gao2(NumericVector X, NumericVector Y, int k = 5, int max_neighbors = 30)
       // std::cout<< "-----------------------------------------" << std::endl << "sorted_dist_i" << std::endl << sorted_dist_i
       //         << std::endl << "-----------------------------------------" << std::endl;
       
-      double rho_i = sorted_dist_i(k, 0);
-      double rho_xi = sorted_dist_i(k, 1);
-      double rho_yi = sorted_dist_i(k, 2);
+      double rho_i = sorted_dist_i(k-1, 0);
+      double rho_xi = sorted_dist_i(k-1, 1);
+      double rho_yi = sorted_dist_i(k-1, 2);
       int k_i = 0;
       
       if (rho_i != 0) k_i = k;
@@ -179,6 +180,9 @@ double gao2(NumericVector X, NumericVector Y, int k = 5, int max_neighbors = 30)
       for(int j = 1; sorted_dist_yi[j] <= rho_yi && n_yi <= max_neighbors; j++) n_yi++;
       //std::cout<< "(N, n_xi, n_yi, k_i): (" << N << "," << n_xi << "," << n_yi << "," << k_i << ")" << std::endl;
       xi += boost::math::digamma(k_i) + log(N) - log(n_xi + 1) - log(n_yi + 1);
+      std::cout << "Distances to kNN: " << sorted_dist_idx(0, 0) << ", " << sorted_dist_idx(1, 0) << ", " << sorted_dist_idx(2, 0) << ", " << sorted_dist_idx(3, 0) << ", " << sorted_dist_idx(4, 0) << std::endl;
+      std::cout << "Rho_x and Rho_y: " << rho_xi << ", " << rho_yi << std::endl;
+      std::cout << "N_xi and N_yi: " << n_xi << ", " << n_yi << std::endl;
       //std::cout<< "Xi = (" << boost::math::digamma(k_i) << ", " << log(N) << ", " << log(n_xi + 1) << ", " << log(n_yi + 1) << ")" << std::endl << std::endl;
     }
     

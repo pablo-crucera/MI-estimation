@@ -4,7 +4,7 @@ library(BH)
 library(rmi)
 library(infotheo)
 library(dplyr)
-library(oot)
+library(boot)
 
 sourceCpp(paste0(dirname(rstudioapi::getSourceEditorContext()$path), "/../cpp-scripts/tfm1.cpp"))
 sourceCpp(paste0(dirname(rstudioapi::getSourceEditorContext()$path), "/../cpp-scripts/gao2.cpp"))
@@ -118,3 +118,9 @@ ans <- hist(Y_acum, breaks = 40)
 x_plot = (ans$breaks[1:(length(ans$breaks)-1)] + ans$breaks[2:length(ans$breaks)]) * 0.5
 
 points(x_plot, as.numeric(lapply(x_plot, pdf_y))*sum(ans$counts)*(ans$breaks[2]-ans$breaks[1]))
+
+
+ans <- c()
+for (i in seq(100,1000, by = 10)){
+  ans <- c(ans, gao2(mat[500:(500+i),1], mat[500:(500+i),2], k = 10))
+}
