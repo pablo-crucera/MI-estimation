@@ -1,3 +1,5 @@
+library(rmi)
+library(Rcpp)
 df <- read.csv("../Desktop/Master/TFM/repo/MI-estimation/data/wind_turbines.csv")
 
 X = rnorm(n = 100, mean = 0, sd = 3)
