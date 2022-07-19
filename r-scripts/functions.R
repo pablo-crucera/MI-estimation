@@ -1,5 +1,5 @@
-wd <- dirname(dirname(rstudioapi::getSourceEditorContext()$path))
-setwd(wd)
+# wd <- dirname(dirname(rstudioapi::getSourceEditorContext()$path))
+# setwd(wd)
 
 generate_data <- function(size = 1000, type = 'continuous', mean = NULL, var = NULL) {
   if(!(type %in% c('continuous','discrete'))) stop("type must be 'continuous' or 'discrete'")
@@ -140,8 +140,14 @@ MI_kde<-function(X, Y, H = NULL, eval_points = NULL) {
     f_y[i] <- integrate_trapezoid(as.numeric(f_xy[, i]), step_x)
   }
 
-  H_x <- integrate_trapezoid(-f_x*log(f_x), step_x)
-  H_y <- integrate_trapezoid(-f_y*log(f_y), step_y)
+  I_x <- -f_x*log(f_x)
+  I_y <- -f_y*log(f_y)
+  
+  I_x[is.na(I_x)] <- 0
+  I_y[is.na(I_y)] <- 0
+  
+  H_x <- integrate_trapezoid(I_x, step_x)
+  H_y <- integrate_trapezoid(I_y, step_y)
   
   f <- matrix(0, grid_size, grid_size)
   
